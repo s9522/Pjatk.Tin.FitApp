@@ -7,7 +7,7 @@ namespace Pjatk.Tin.FitApp.Api
     {
         public static void Register(HttpConfiguration config)
         {
-            NinjectWebCommon.Start();
+            
             // Web API routes
             config.MapHttpAttributeRoutes();
 
