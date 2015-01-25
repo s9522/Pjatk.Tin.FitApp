@@ -19,6 +19,8 @@ namespace Pjatk.Tin.FitApp.Api
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            NinjectWebCommon.Start();
         }
     }
 }

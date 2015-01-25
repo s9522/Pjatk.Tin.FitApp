@@ -1,20 +1,20 @@
-﻿using Pjatk.Tin.FitApp.Api.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http.Filters;
+﻿using System.Web.Http.Filters;
+using Ninject;
+using Pjatk.Tin.FitApp.Api.Controllers;
+using Raven.Client;
 
-namespace Pjatk.Tin.FitApp.Api.App_Start.Filters
+namespace Pjatk.Tin.FitApp.Api.Filters
 {
     public class DbSessionInitializerFilter : ActionFilterAttribute
     {
+        [Inject]
+        public IDocumentSession DocumentSession { get; set; }
         public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
             var controller = actionContext.ControllerContext.Controller as BaseApiController;
-            if (controller.DocumentSession!=null)
+            if (controller != null && controller.DocumentSession!=null)
             {
-                controller.DocumentSession = RavenDbConfig.Store.OpenSession();
+                controller.DocumentSession = DocumentSession;
                 base.OnActionExecuting(actionContext);
             }
         }
@@ -22,9 +22,11 @@ namespace Pjatk.Tin.FitApp.Api.App_Start.Filters
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
             var controller = actionExecutedContext.ActionContext.ControllerContext.Controller as BaseApiController;
-            if (controller.DocumentSession != null && actionExecutedContext.Exception == null)
+            if (controller != null && (controller.DocumentSession != null && actionExecutedContext.Exception == null))
+            {
                 controller.DocumentSession.SaveChanges();
-            controller.DocumentSession.Dispose();
+                controller.DocumentSession.Dispose();   
+            }                
             base.OnActionExecuted(actionExecutedContext);
         }
     }
