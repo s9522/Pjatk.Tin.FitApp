@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Ninject;
 using Ninject.Web.Common;
+using Pjatk.Tin.FitApp.Api.NinjectModules;
 
 namespace Pjatk.Tin.FitApp.Api
 {
@@ -42,7 +41,7 @@ namespace Pjatk.Tin.FitApp.Api
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
-                //RegisterServices(kernel);
+                RegisterServices(kernel);
                 return kernel;
             }
             catch
@@ -50,6 +49,11 @@ namespace Pjatk.Tin.FitApp.Api
                 kernel.Dispose();
                 throw;
             }
+        }
+
+        private static void RegisterServices(IKernel kernel)
+        {
+            kernel.Load<RavenModule>();
         }
     }
 }

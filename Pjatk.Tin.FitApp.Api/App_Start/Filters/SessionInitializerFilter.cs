@@ -1,4 +1,5 @@
-﻿using System.Web.Http.Filters;
+﻿using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
 using Ninject;
 using Pjatk.Tin.FitApp.Api.Controllers;
 using Raven.Client;
@@ -9,7 +10,7 @@ namespace Pjatk.Tin.FitApp.Api.Filters
     {
         [Inject]
         public IDocumentSession DocumentSession { get; set; }
-        public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
+        public override void OnActionExecuting(HttpActionContext actionContext)
         {
             var controller = actionContext.ControllerContext.Controller as BaseApiController;
             if (controller != null && controller.DocumentSession!=null)
