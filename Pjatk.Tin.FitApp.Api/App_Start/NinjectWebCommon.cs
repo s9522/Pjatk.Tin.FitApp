@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Web;
+using System.Web.Http;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Ninject;
 using Ninject.Web.Common;
+using Ninject.Web.WebApi;
 using Pjatk.Tin.FitApp.Api.NinjectModules;
 
 namespace Pjatk.Tin.FitApp.Api
@@ -16,9 +18,11 @@ namespace Pjatk.Tin.FitApp.Api
         /// </summary>
         public static void Start()
         {
-            DynamicModuleUtility.RegisterModule(typeof (OnePerRequestHttpModule));
-            DynamicModuleUtility.RegisterModule(typeof (NinjectHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             Bootstrapper.Initialize(CreateKernel);
+            
+            
         }
 
         /// <summary>
@@ -38,6 +42,7 @@ namespace Pjatk.Tin.FitApp.Api
             var kernel = new StandardKernel(); // you'll add modules to the parameter list here
             try
             {
+                //GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
