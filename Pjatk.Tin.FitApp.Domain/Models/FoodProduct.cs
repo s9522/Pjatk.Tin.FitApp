@@ -1,8 +1,7 @@
 ﻿namespace Pjatk.Tin.FitApp.Domain.Models
 {
-    public class FoodProduct
+    public class FoodProduct : Entity
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public uint CaloriesPerGram { get; set; }
         public uint CarbsPerGram { get; set; }

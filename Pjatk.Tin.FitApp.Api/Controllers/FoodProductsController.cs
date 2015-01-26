@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Http;
 using Pjatk.Tin.FitApp.Domain.Models;
+
 namespace Pjatk.Tin.FitApp.Api.Controllers
 {
     [RoutePrefix("products")]
